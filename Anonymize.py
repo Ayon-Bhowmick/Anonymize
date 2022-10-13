@@ -1,6 +1,7 @@
 import cv2
 from sys import argv
 import cli
+import gaussian
 
 if __name__ == "__main__":
     args = cli(argv)
@@ -16,17 +17,13 @@ if __name__ == "__main__":
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         face = cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
         if len(face) != 0:
-            nx, ny, nw, nh = face[0]
-            if abs(nx - x) > 20:
-                x = nx
-            if abs(ny - y) > 20:
-                y = ny
-            if abs(nw - w) > 20:
-                w = nw
-            if abs(nh - h) > 20:
-                h = nh
+            fin = [x, y, w, h]
+            for i in range(4):
+                if abs(fin[i] - face[0][i]) > 20:
+                    fin[i] = face[0][i]
+            x, y, w, h = fin
         if args[0] == 0:
-            frame[y:y+h, x:x+w] = cv2.GaussianBlur(frame[y:y+h, x:x+w], (71, 71), 30)
+            frame = gaussian(frame, x, y, w, h)
         cv2.imshow("FaceBlur", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
