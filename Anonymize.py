@@ -3,6 +3,7 @@ from sys import argv
 import cli
 import gaussian
 import pixelate
+import blackout
 
 if __name__ == "__main__":
     args = cli(argv)
@@ -27,6 +28,8 @@ if __name__ == "__main__":
             frame = gaussian(frame, x, y, w, h)
         elif args[0] == 1:
             frame = pixelate(frame, x, y, w, h)
-        cv2.imshow("FaceBlur", frame)
+        elif args[0] == 2:
+            frame = blackout(frame, x, y, w, h)
+        cv2.imshow("Anonymize", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
