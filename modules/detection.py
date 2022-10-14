@@ -15,7 +15,6 @@ def eyes(cascade, frame, x, y, w, h):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     eyes = cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
     if len(eyes) == 2:
-        print(eyes)
         fin = [x, y, w, h]
         x = min(eyes[0][0], eyes[1][0])
         y = min(eyes[0][1], eyes[1][1])

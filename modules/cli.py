@@ -1,4 +1,4 @@
-from sys import modules
+# from sys import modules
 
 def cli(argv: list) -> list[int, int, int]:
     argv = argv[1:]
@@ -41,4 +41,4 @@ def cli(argv: list) -> list[int, int, int]:
         return [-1, -1]
     return ret
 
-modules[__name__] = cli
+# modules[__name__] = cli

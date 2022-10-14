@@ -1,8 +1,6 @@
 import cv2
 from sys import argv
-import cli
-import filters
-import detection
+from modules import *
 
 if __name__ == "__main__":
     args = cli(argv)
@@ -33,6 +31,7 @@ if __name__ == "__main__":
         else:
             find = "Face" if args[0] == 0 else "Eyes"
             frame = cv2.putText(frame, f"{find} not detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-        cv2.imshow("Anonymize", frame)
+        if args[2] == 0:
+            cv2.imshow("Anonymize", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
