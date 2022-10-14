@@ -1,6 +1,7 @@
 import cv2
 from sys import argv
 from modules import *
+import pyvirtualcam
 
 if __name__ == "__main__":
     args = cli(argv)
@@ -12,6 +13,12 @@ if __name__ == "__main__":
         cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xml")
     video = cv2.VideoCapture(0)
     x, y, w, h = 0, 0, 0, 0
+    if args[2] == 1:
+        ret, frame = video.read()
+        if not ret:
+            print("Camera not found")
+            exit(1)
+        cam = pyvirtualcam.Camera(width=frame.shape[1], height=frame.shape[0], fps=20)
     while True:
         ret, frame = video.read()
         if not ret:
@@ -33,5 +40,9 @@ if __name__ == "__main__":
             frame = cv2.putText(frame, f"{find} not detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         if args[2] == 0:
             cv2.imshow("Anonymize", frame)
+        elif args[2] == 1:
+            cam.send(frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            if args[2] == 1:
+                cam.close()
             break
