@@ -8,13 +8,16 @@ if __name__ == "__main__":
     args = cli(argv)
     if args[0] == -1:
         exit(1)
-    # cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-    cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xml")
+    if args[0] == 0:
+        cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    elif args[0] == 1:
+        cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_eye.xml")
     video = cv2.VideoCapture(0)
     x, y, w, h = 0, 0, 0, 0
     while True:
         ret, frame = video.read()
         if not ret:
+            print("Camera not found")
             break
         if args[0] == 0:
             x, y, w, h = detection.face(cascade, frame, x, y, w, h)
@@ -28,7 +31,8 @@ if __name__ == "__main__":
             elif args[1] == 2:
                 frame = filters.blackout(frame, x, y, w, h)
         else:
-            frame = cv2.putText(frame, "Not detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            find = "Face" if args[0] == 0 else "Eyes"
+            frame = cv2.putText(frame, f"{find} not detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
         cv2.imshow("Anonymize", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

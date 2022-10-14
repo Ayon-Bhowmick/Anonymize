@@ -16,13 +16,14 @@ def eyes(cascade, frame, x, y, w, h):
     eyes = cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
     if len(eyes) == 2:
         print(eyes)
-        x = eyes[0][0]
-        y = eyes[0][1]
-        w = eyes[0][1] + eyes[1][1] + eyes[1][3]
-        h = max(eyes[0][3], eyes[1][3])
         fin = [x, y, w, h]
+        x = min(eyes[0][0], eyes[1][0])
+        y = min(eyes[0][1], eyes[1][1])
+        w = eyes[0][1] + eyes[1][1] + eyes[1][3]
+        h = max(eyes[0][3], eyes[1][3]) + abs(eyes[0][1] - eyes[1][1])
+        temp = [x, y, w, h]
         for i in range(4):
-            if abs(fin[i] - eyes[0][i]) > 20:
-                fin[i] = eyes[0][i]
+            if abs(fin[i] - temp[i]) > 20:
+                fin[i] = temp[i]
         x, y, w, h = fin
     return x, y, w, h
