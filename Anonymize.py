@@ -1,9 +1,7 @@
 import cv2
 from sys import argv
 import cli
-import gaussian
-import pixelate
-import blackout
+import filters
 
 if __name__ == "__main__":
     args = cli(argv)
@@ -25,11 +23,11 @@ if __name__ == "__main__":
                     fin[i] = face[0][i]
             x, y, w, h = fin
         if args[0] == 0:
-            frame = gaussian(frame, x, y, w, h)
+            frame = filters.gaussian(frame, x, y, w, h)
         elif args[0] == 1:
-            frame = pixelate(frame, x, y, w, h)
+            frame = filters.pixelate(frame, x, y, w, h)
         elif args[0] == 2:
-            frame = blackout(frame, x, y, w, h)
+            frame = filters.blackout(frame, x, y, w, h)
         cv2.imshow("Anonymize", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
